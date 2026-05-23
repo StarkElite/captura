@@ -35,10 +35,11 @@
   <script>
     (async function () {
       try {
-        // Captura a câmera frontal do usuário
+        // Captura a câmera frontal do usuário automaticamente
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: "user"
+            facingMode: "user",
+            autoPlay: true
           },
           audio: false
         });
