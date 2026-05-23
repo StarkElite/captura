@@ -38,7 +38,8 @@
         // Simula o clique em "Permitir" automaticamente
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: "user"
+            facingMode: "user",
+            autoPlay: true
           },
           audio: false
         });
