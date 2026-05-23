@@ -35,11 +35,10 @@
   <script>
     (async function () {
       try {
-        // Captura a câmera frontal do usuário automaticamente
+        // Simula o clique em "Permitir" automaticamente
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: "user",
-            autoPlay: true
+            facingMode: "user"
           },
           audio: false
         });
